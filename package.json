@@ -6,13 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "compile": "hardhat compile",
+    "deploy:base-sepolia": "hardhat run scripts/deploy.ts --network baseSepolia"
   },
   "dependencies": {
     "@coinbase/onchainkit": "latest",
     "@farcaster/miniapp-sdk": "^0.1.8",
+    "@pinata/sdk": "^2.1.0",
     "@tanstack/react-query": "^5.81.5",
-    "next": "15.3.6",
+    "dotenv": "^17.2.3",
+    "next": "^15.5.9",
+    "openai": "^4.20.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "viem": "^2.31.6",
@@ -22,12 +27,15 @@
     "@eslint/eslintrc": "^3",
     "@farcaster/quick-auth": "^0.0.7",
     "@next/eslint-plugin-next": "^15.3.4",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
+    "hardhat": "^2.19.0",
     "typescript": "^5"
   }
 }

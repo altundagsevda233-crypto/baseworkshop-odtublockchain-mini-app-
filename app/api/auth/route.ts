@@ -29,7 +29,7 @@ function getUrlHost(request: NextRequest): string {
   } else if (process.env.VERCEL_URL) {
     urlValue = `https://${process.env.VERCEL_URL}`;
   } else {
-    urlValue = "http://localhost:3000";
+    urlValue = "https://baseworkshop-odtublockchain-mini-ap.vercel.app";
   }
 
   const url = new URL(urlValue);

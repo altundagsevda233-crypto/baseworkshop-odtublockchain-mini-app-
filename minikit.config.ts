@@ -1,6 +1,6 @@
 const ROOT_URL =
   process.env.NEXT_PUBLIC_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000');
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'https://baseworkshop-odtublockchain-mini-ap.vercel.app');
 
 /**
  * MiniApp configuration object. Must follow the Farcaster MiniApp specification.
@@ -15,9 +15,9 @@ export const minikitConfig = {
 },
   miniapp: {
     version: "1",
-    name: "Cubey", 
-    subtitle: "Your AI Ad Companion", 
-    description: "Ads",
+    name: "SpellCard NFT Creator", 
+    subtitle: "Create Mystical Spell Card NFTs", 
+    description: "Create and mint unique spell card NFTs with AI-generated art",
     screenshotUrls: [`${ROOT_URL}/screenshot-portrait.png`],
     iconUrl: `${ROOT_URL}/blue-icon.png`,
     splashImageUrl: `${ROOT_URL}/blue-hero.png`,

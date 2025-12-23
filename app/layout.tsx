@@ -6,21 +6,26 @@ import { RootProvider } from "./rootProvider";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const ROOT_URL =
+    process.env.NEXT_PUBLIC_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://baseworkshop-odtublockchain-mini-ap.vercel.app");
+
   return {
-    title: minikitConfig.miniapp.name,
-    description: minikitConfig.miniapp.description,
+    title: "SpellCard NFT Creator",
+    description: "Create and mint mystical spell card NFTs",
+    openGraph: {
+      title: "SpellCard NFT Creator",
+      description: "Create and mint mystical spell card NFTs",
+      images: [`${ROOT_URL}/hero.png`],
+    },
     other: {
-      "fc:frame": JSON.stringify({
-        version: minikitConfig.miniapp.version,
-        imageUrl: minikitConfig.miniapp.heroImageUrl,
-        button: {
-          title: `Join the ${minikitConfig.miniapp.name} Waitlist`,
-          action: {
-            name: `Launch ${minikitConfig.miniapp.name}`,
-            type: "launch_frame",
-          },
-        },
-      }),
+      "fc:frame": "vNext",
+      "fc:frame:image": `${ROOT_URL}/hero.png`,
+      "fc:frame:post_url": `${ROOT_URL}/api/frame`,
+      "fc:frame:button:1": "Start Creating",
+      "fc:frame:button:1:action": "post",
     },
   };
 }
