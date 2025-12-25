@@ -57,6 +57,7 @@ export default function Home() {
   const [loadingState, setLoadingState] = useState<"idle" | "generating" | "uploading" | "complete">("idle");
   const [generatedCard, setGeneratedCard] = useState<string | null>(null);
   const [metadataUrl, setMetadataUrl] = useState<string | null>(null);
+  const [shareableImage, setShareableImage] = useState<string | null>(null);
   const [rarity, setRarity] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
@@ -126,6 +127,11 @@ export default function Home() {
         console.log("Setting Preview Image (Source):", data.base64 ? "Base64" : "URL");
 
         setGeneratedCard(previewImage);
+
+        // For sharing, prefer the hosted URL (IPFS) or the Pollinations URL
+        // NEVER share Base64 as it breaks URL limits (Error 414)
+        setShareableImage(data.imageUrl || data.previewUrl);
+
         setMetadataUrl(data.metadataUrl);
         if (data.rarity) {
           setRarity(data.rarity.toLowerCase());
@@ -303,7 +309,8 @@ export default function Home() {
                   style={{ marginTop: '1rem', flex: 1 }}
                   onClick={() => {
                     const text = encodeURIComponent(`Behold! I have forged a new ${rarity || ""} ${element} spell card: "${keyword}". 🪄✨\n\nMint yours now!`);
-                    const embed = encodeURIComponent(generatedCard || "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png");
+                    // Use shareableImage if available, fallback to placeholder. DO NOT use generatedCard (Base64).
+                    const embed = encodeURIComponent(shareableImage || "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png");
                     window.open(`https://warpcast.com/~/compose?text=${text}&embeds[]=${embed}`, '_blank', 'noopener,noreferrer');
                   }}
                 >
