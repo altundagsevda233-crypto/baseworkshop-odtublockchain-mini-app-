@@ -28,6 +28,13 @@ export function RootProvider({ children }: { children: ReactNode }) {
             appearance: {
               mode: 'auto',
             },
+            wallet: {
+              display: 'modal',
+              preference: 'all',
+            },
+          }}
+          miniKit={{
+            enabled: true,
           }}
         >
           {children}
