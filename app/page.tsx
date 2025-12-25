@@ -112,7 +112,9 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate spell");
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Server API Error:", errorData);
+        throw new Error(errorData.error || errorData.details || "Failed to generate spell");
       }
 
       const data = await response.json();
