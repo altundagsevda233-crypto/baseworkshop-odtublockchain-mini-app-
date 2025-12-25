@@ -183,53 +183,7 @@ export default function Home() {
   // --------------------------------------------------------------------------------
   // We check if connected AND chainId is defined AND chainId is not 84532
   // We also check if chainId is just missing despite being connected (edge case)
-  if (isConnected && chainId && chainId !== 84532) {
-    return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        backgroundColor: '#000',
-        color: '#fff',
-        zIndex: 9999,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        padding: '2rem',
-        textAlign: 'center'
-      }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#ff4444' }}>Wrong Network Detected</h1>
-        <p style={{ marginBottom: '2rem', maxWidth: '600px', lineHeight: '1.6' }}>
-          You are currently connected to <strong>Ethereum Mainnet</strong> (or another unsupported network: ID {chainId}).<br />
-          This application <strong>ONLY</strong> works on <strong>Base Sepolia Testnet</strong> (Chain ID: 84532).
-        </p>
 
-        <p style={{ marginBottom: '2rem', fontSize: '0.9rem', color: '#aaa' }}>
-          Attempting to switch valid network... or click the button below.
-        </p>
-
-        <button
-          onClick={() => switchChain({ chainId: 84532 })}
-          style={{
-            padding: '1rem 2rem',
-            fontSize: '1.1rem',
-            backgroundColor: '#fff',
-            color: '#000',
-            border: 'none',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            boxShadow: '0 0 20px rgba(255, 255, 255, 0.3)'
-          }}
-        >
-          Switch to Base Sepolia
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.container}>
@@ -336,23 +290,13 @@ export default function Home() {
               <p>Your spell has been forged.</p>
 
               <div style={{ display: 'flex', gap: '1rem' }}>
-                {chainId === 84532 ? (
-                  <button
-                    className={styles.mintButton}
-                    onClick={handleMint}
-                    disabled={isPending || isConfirming}
-                  >
-                    {isPending ? "Confirming..." : "Mint NFT (0.001 ETH)"}
-                  </button>
-                ) : (
-                  <button
-                    className={styles.mintButton}
-                    style={{ backgroundColor: '#eab308', color: '#000' }} // Yellow warning color
-                    onClick={() => switchChain({ chainId: 84532 })}
-                  >
-                    Switch to Base Sepolia
-                  </button>
-                )}
+                <button
+                  className={styles.mintButton}
+                  onClick={handleMint}
+                  disabled={isPending || isConfirming}
+                >
+                  {isPending ? "Confirming..." : "Mint NFT (0.001 ETH)"}
+                </button>
 
                 <button
                   className={styles.shareButton}
