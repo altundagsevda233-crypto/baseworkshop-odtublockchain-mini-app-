@@ -11,11 +11,11 @@ async function main() {
   console.log("Deploy eden hesap (Patron):", deployer.address);
 
   // 2. Kontrat Fabrikasını Çağır
-  const ContractFactory = await hre.ethers.getContractFactory("SpellDeck"); 
+  const ContractFactory = await hre.ethers.getContractFactory("SpellDeck");
 
   // 3. Deploy İşlemini Başlat
   console.log("Deploy işlemi başlıyor, lütfen bekle...");
-  
+
   // DÜZELTME BURADA:
   // Senin kontratın constructor'da bir adres istiyor.
   // Biz de senin adresini (deployer.address) gönderiyoruz.
@@ -27,8 +27,12 @@ async function main() {
   // 5. Sonucu Yazdır
   console.log("----------------------------------------------------");
   console.log("BAŞARILI! SpellDeck Kontrat Adresi:");
-  console.log(contract.target); 
+  console.log(contract.target);
   console.log("----------------------------------------------------");
+
+  // Save address to file for the agent to read reliably
+  const fs = require("fs");
+  fs.writeFileSync("contract_address.txt", contract.target);
 }
 
 main().catch((error) => {

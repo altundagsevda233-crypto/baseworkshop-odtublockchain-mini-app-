@@ -1,14 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=MedievalSharp&display=swap');
+
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #171717;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: #0a0a0a;
-      --foreground: #ededed;
-    }
+    --background: #0f0905; /* Blackish brown */
+    --foreground: #e8dcc5; /* Parchment color */
+    --accent-gold: #c5a059;
+    --accent-red: #8a1c1c;
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'MedievalSharp', cursive;
   }
 
   html,
@@ -20,25 +19,11 @@
   body {
     color: var(--foreground);
     background: var(--background);
-    font-family: var(--font-inter), sans-serif;
+    background-image: radial-gradient(circle at 50% 50%, #1a100a 0%, #0f0905 100%);
+    font-family: var(--font-body), sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  code {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    font-family: var(--font-source-code-pro), monospace;
-    font-size: 0.875rem;
-    padding: 0.25rem 0.5rem calc(0.25rem + 2px);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    code {
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
+    min-height: 100vh;
   }
 
   * {
@@ -48,13 +33,13 @@
   }
 
   a {
-    color: inherit;
+    color: var(--accent-gold);
     text-decoration: none;
+    transition: color 0.3s ease;
   }
-
-  @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: dark;
-    }
+  
+  a:hover {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
   }
 }

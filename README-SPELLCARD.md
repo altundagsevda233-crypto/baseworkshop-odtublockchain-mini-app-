@@ -23,8 +23,6 @@ npm install
 Create a `.env.local` file with the following variables:
 
 ```bash
-# OpenAI API Key
-OPENAI_KEY=your_openai_api_key
 
 # Pinata JWT Token
 PINATA_JWT=your_pinata_jwt_token
@@ -138,7 +136,7 @@ The `SpellDeck` contract is an ERC-721 NFT contract with:
 - **OnchainKit**: Coinbase's Web3 toolkit
 - **Hardhat**: Smart contract development
 - **OpenZeppelin**: Secure smart contract libraries
-- **OpenAI DALL-E 3**: AI image generation
+- **Pollinations.ai**: Free AI image generation (replaces DALL-E)
 - **Pinata**: IPFS pinning service
 - **Viem**: Ethereum library
 - **Wagmi**: React Hooks for Ethereum
