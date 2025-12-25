@@ -24,6 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "fc:frame:post_url": `${ROOT_URL}/api/frame`,
       "fc:frame:button:1": "Start Creating",
       "fc:frame:button:1:action": "post",
+      "base:app_id": "6939a0a98a7c4e55fec73d14",
     },
   };
 }

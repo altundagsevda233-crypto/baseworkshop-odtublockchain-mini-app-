@@ -1,45 +1,38 @@
 "use client";
-import { ReactNode } from "react";
-import { OnchainKitProvider } from "@coinbase/onchainkit";
-import "@coinbase/onchainkit/styles.css";
+import { ReactNode, useState } from 'react';
+import { OnchainKitProvider } from '@coinbase/onchainkit';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { baseSepolia, mainnet, base } from 'viem/chains';
+import { WagmiProvider, createConfig, http } from 'wagmi';
+import '@coinbase/onchainkit/styles.css';
 
-// Manually define Base Sepolia to ensure NO non-serializable objects (like Sets) are present
-const baseSepoliaVal = {
-  id: 84532,
-  name: 'Base Sepolia',
-  nativeCurrency: { name: 'Sepolia Ether', symbol: 'ETH', decimals: 18 },
-  rpcUrls: {
-    default: { http: ['https://sepolia.base.org'] },
+const wagmiConfig = createConfig({
+  chains: [baseSepolia, mainnet, base],
+  transports: {
+    [baseSepolia.id]: http(),
+    [mainnet.id]: http(),
+    [base.id]: http(),
   },
-  blockExplorers: {
-    default: { name: 'Basescan', url: 'https://sepolia.basescan.org' },
-  },
-  testnet: true,
-};
+});
 
 export function RootProvider({ children }: { children: ReactNode }) {
-  if (!process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY) {
-    console.warn("NEXT_PUBLIC_ONCHAINKIT_API_KEY is missing!");
-  }
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <OnchainKitProvider
-      apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-      chain={baseSepoliaVal} // Pass plain object
-      config={{
-        appearance: {
-          mode: "auto",
-        },
-        wallet: {
-          display: "modal",
-          preference: "all",
-        },
-      }}
-      miniKit={{
-        enabled: true,
-      }}
-    >
-      {children}
-    </OnchainKitProvider>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <OnchainKitProvider
+          apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+          chain={baseSepolia}
+          config={{
+            appearance: {
+              mode: 'auto',
+            },
+          }}
+        >
+          {children}
+        </OnchainKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
