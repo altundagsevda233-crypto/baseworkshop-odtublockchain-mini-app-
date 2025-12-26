@@ -292,13 +292,19 @@ export default function Home() {
               <p>Your spell has been forged.</p>
 
               <div style={{ display: 'flex', gap: '1rem' }}>
-                <button
-                  className={styles.mintButton}
-                  onClick={handleMint}
-                  disabled={isPending || isConfirming}
-                >
-                  {isPending ? "Confirming..." : "Mint NFT (0.001 ETH)"}
-                </button>
+                {!isConnected ? (
+                  <ConnectWallet className={styles.mintButton}>
+                    Connect to Mint
+                  </ConnectWallet>
+                ) : (
+                  <button
+                    className={styles.mintButton}
+                    onClick={handleMint}
+                    disabled={isPending || isConfirming}
+                  >
+                    {isPending ? "Confirming..." : "Mint NFT (0.001 ETH)"}
+                  </button>
+                )}
 
                 <button
                   className={styles.shareButton}
