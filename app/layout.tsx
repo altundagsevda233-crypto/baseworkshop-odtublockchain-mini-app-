@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
     process.env.NEXT_PUBLIC_URL ||
     (process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "https://baseworkshop-odtublockchain-mini-app.vercel.app");
+      : "https://baseworkshop-odtublockchain-mini-ap.vercel.app");
 
   return {
     title: "SpellCard NFT Creator",
