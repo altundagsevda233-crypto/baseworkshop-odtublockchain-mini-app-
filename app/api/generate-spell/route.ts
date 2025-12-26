@@ -14,15 +14,7 @@ interface GenerateSpellRequest {
   keyword: string;
 }
 
-// Rarity Logic
-type Rarity = "Common" | "Rare" | "Legendary";
 
-function determineRarity(): Rarity {
-  const rand = Math.random() * 100;
-  if (rand < 10) return "Legendary"; // 10%
-  if (rand < 40) return "Rare";      // 30%
-  return "Common";                   // 60%
-}
 
 export async function POST(request: NextRequest) {
   console.log("Processing spell generation request...");
@@ -48,23 +40,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Determine Rarity
-    const rarity = determineRarity();
-    console.log(`Determined Rarity: ${rarity}`);
-
-    // 2. Prompt Engineering
-    let rarityDesc = "";
-    switch (rarity) {
-      case "Legendary": rarityDesc = "masterpiece, golden aura, intricate gold detailed border, elite magical aesthetics, glowing divine particles"; break;
-      case "Rare": rarityDesc = "high quality, mystic purple haze, silver and obsidian details, sharp focus, magical runes"; break;
-      case "Common": rarityDesc = "standard fantasy art, simple rustic frame, worn texture, basic elemental effects"; break;
-    }
-
-    // Simplified prompt to avoid URL length issues
-    const imagePrompt = `spell card of ${element} element, ${style} style, representing ${keyword}. ${rarity} quality. fantasy art, high resolution.`;
+    // 1. Prompt Engineering (Clean, No Frame, Full Bleed)
+    const imagePrompt = `fantasy illustration of ${keyword}, invoking ${element} elemental magic, ${style} style. masterpiece, intricate details, glowing magical effects, 8k resolution, full bleed, no border, no frame.`;
     console.log("Final Prompt:", imagePrompt);
 
-    // 3. Generate Image (Pollinations.ai)
+    // 2. Generate Image (Pollinations.ai)
     // FIX: Use 'image.pollinations.ai' for direct raw image data. 
     // The previous 'pollinations.ai/p/' URL was returning an HTML page.
     const encodedPrompt = encodeURIComponent(imagePrompt);
@@ -85,7 +65,7 @@ export async function POST(request: NextRequest) {
 
     const imageBlob = await imageRes.blob();
 
-    // 4. Upload Image to Pinata (Direct API Call)
+    // 3. Upload Image to Pinata (Direct API Call)
     console.log("Pinning image to IPFS via Direct API...");
 
     // Create Base64 for immediate frontend preview (Bypasses URL loading issues)
@@ -95,8 +75,7 @@ export async function POST(request: NextRequest) {
     formData.append("file", imageBlob, `SpellCard-${element}-${Date.now()}.png`);
 
     const pinataMetadata = JSON.stringify({
-      name: `SpellCard-${element}-${Date.now()}`,
-      keyvalues: { rarity: rarity }
+      name: `SpellCard-${element}-${Date.now()}`
     });
     formData.append("pinataMetadata", pinataMetadata);
 
@@ -129,21 +108,20 @@ export async function POST(request: NextRequest) {
       imageIpfsUrl = imageUrl;
     }
 
-    // 5. Create Metadata
+    // 4. Create Metadata
     const metadata = {
       name: `${element} Spell Card`,
-      description: `A ${rarity} ${element} spell card in ${style} style. Aspect: ${keyword}.`,
+      description: `A ${element} spell card in ${style} style. Aspect: ${keyword}.`,
       image: imageIpfsUrl,
       attributes: [
         { trait_type: "Element", value: element },
         { trait_type: "Style", value: style },
-        { trait_type: "Keyword", value: keyword },
-        { trait_type: "Rarity", value: rarity },
+        { trait_type: "Keyword", value: keyword }
       ],
     };
 
     let metadataIpfsUrl = "";
-    // 6. Upload Metadata to Pinata (Direct API Call)
+    // 5. Upload Metadata to Pinata (Direct API Call)
     if (uploadRes.ok) {
       console.log("Pinning metadata to IPFS via Direct API...");
       const metadataRes = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
@@ -178,8 +156,7 @@ export async function POST(request: NextRequest) {
       previewUrl: imageUrl,
       base64: base64Image, // <--- THE KEY FIX
       metadataUrl: metadataIpfsUrl,
-      metadata,
-      rarity,
+      metadata
     });
 
   } catch (error: any) {

@@ -58,7 +58,6 @@ export default function Home() {
   const [generatedCard, setGeneratedCard] = useState<string | null>(null);
   const [metadataUrl, setMetadataUrl] = useState<string | null>(null);
   const [shareableImage, setShareableImage] = useState<string | null>(null);
-  const [rarity, setRarity] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   // 3D Tilt Refs
@@ -133,9 +132,6 @@ export default function Home() {
         setShareableImage(data.imageUrl || data.previewUrl);
 
         setMetadataUrl(data.metadataUrl);
-        if (data.rarity) {
-          setRarity(data.rarity.toLowerCase());
-        }
         setLoadingState("complete");
       }
     } catch (err: unknown) {
@@ -292,7 +288,7 @@ export default function Home() {
 
           {loadingState === "complete" && (
             <div className={styles.metadata}>
-              <h3>{rarity ? rarity.charAt(0).toUpperCase() + rarity.slice(1) : "Spell"} Inscribed</h3>
+              <h3>Spell Inscribed</h3>
               <p>Your spell has been forged.</p>
 
               <div style={{ display: 'flex', gap: '1rem' }}>
@@ -308,7 +304,7 @@ export default function Home() {
                   className={styles.shareButton}
                   style={{ marginTop: '1rem', flex: 1 }}
                   onClick={() => {
-                    const text = encodeURIComponent(`Behold! I have forged a new ${rarity || ""} ${element} spell card: "${keyword}". 🪄✨\n\nMint yours now!`);
+                    const text = encodeURIComponent(`Behold! I have forged a new ${element} spell card: "${keyword}". 🪄✨\n\nMint yours now!`);
                     // Use shareableImage if available, fallback to placeholder. DO NOT use generatedCard (Base64).
                     const embed = encodeURIComponent(shareableImage || "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png");
                     window.open(`https://warpcast.com/~/compose?text=${text}&embeds[]=${embed}`, '_blank', 'noopener,noreferrer');
@@ -333,7 +329,7 @@ export default function Home() {
               <img
                 src={generatedCard}
                 alt="Generated Spell Card"
-                className={`${styles.cardImage} ${rarity ? styles[rarity] : ''}`}
+                className={styles.cardImage}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   console.error("Image Failed:", target.src);
