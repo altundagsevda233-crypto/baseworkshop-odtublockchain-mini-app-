@@ -94,6 +94,30 @@ export default function Home() {
     }
   };
 
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!cardRef.current || !generatedCard) return;
+
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleTouchEnd = () => {
+    if (cardRef.current) {
+      cardRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+    }
+  };
+
   // Handle Generation
   const handleGenerate = async () => {
     if (!keyword) {
@@ -239,7 +263,7 @@ export default function Home() {
               value={style}
               onChange={(e) => setStyle(e.target.value)}
             >
-              {["Chaos", "Order", "Ancient", "Cyberpunk", "Ethereal", "Dark Fantasy"].map(st => (
+              {["Chaos", "Order", "Ancient", "Ethereal", "Dark Fantasy"].map(st => (
                 <option key={st} value={st}>{st}</option>
               ))}
             </select>
@@ -331,6 +355,8 @@ export default function Home() {
               ref={cardRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               <img
                 src={generatedCard}
